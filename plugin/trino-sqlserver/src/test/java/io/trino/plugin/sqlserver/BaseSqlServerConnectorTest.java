@@ -46,6 +46,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -164,6 +165,13 @@ public abstract class BaseSqlServerConnectorTest
                             "Expecting actual not to be empty).*");
             throw new SkipException("to be fixed");
         }
+    }
+
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'sqlserver' does not support comment on table");
     }
 
     @Test

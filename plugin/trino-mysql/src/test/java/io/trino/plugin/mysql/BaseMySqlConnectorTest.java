@@ -35,6 +35,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
@@ -242,6 +243,13 @@ public abstract class BaseMySqlConnectorTest
         assertEquals(row.getField(0), (byte) 127);
 
         assertUpdate("DROP TABLE mysql_test_tinyint1");
+    }
+
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'mysql' does not support comment on table");
     }
 
     @Test

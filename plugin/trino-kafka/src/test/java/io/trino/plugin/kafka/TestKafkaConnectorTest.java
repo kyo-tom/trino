@@ -265,6 +265,13 @@ public class TestKafkaConnectorTest
     }
 
     @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'kafka' does not support comment on table");
+    }
+
+    @Test
     public void testReadAllDataTypes()
     {
         String json = "{" +

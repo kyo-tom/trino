@@ -1834,6 +1834,14 @@ public abstract class BaseConnectorTest
     }
 
     @Test
+    public void testCreateTableWithComment()
+    {
+        String tableName = "test_create_" + randomTableSuffix();
+        assertUpdate("CREATE TABLE " + tableName + " (a bigint) COMMENT 'foo'");
+        assertThat(getTableComment(tableName)).isEqualTo("foo");
+    }
+
+    @Test
     public void testCreateTableAsSelect()
     {
         String tableName = "test_ctas" + randomTableSuffix();

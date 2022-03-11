@@ -198,6 +198,13 @@ public class TestMemSqlConnectorTest
     }
 
     @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'memsql' does not support comment on table");
+    }
+
+    @Test
     public void testMemSqlTinyint()
     {
         onRemoteDatabase().execute("CREATE TABLE tpch.mysql_test_tinyint1 (c_tinyint tinyint(1))");

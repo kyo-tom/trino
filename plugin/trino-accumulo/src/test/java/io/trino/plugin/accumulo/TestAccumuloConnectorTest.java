@@ -162,6 +162,13 @@ public class TestAccumuloConnectorTest
         assertUpdate("DROP TABLE test_insert");
     }
 
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'accumulo' does not support comment on table");
+    }
+
     @Override // Overridden because we currently do not support arrays with null elements
     public void testInsertArray()
     {

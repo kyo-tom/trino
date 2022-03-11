@@ -138,6 +138,13 @@ public abstract class BaseMongoConnectorTest
     }
 
     @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'mongodb' does not support comment on table");
+    }
+
+    @Test
     public void createTableWithEveryType()
     {
         String query = "" +

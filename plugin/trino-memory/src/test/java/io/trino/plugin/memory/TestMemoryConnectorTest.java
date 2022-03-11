@@ -224,6 +224,13 @@ public class TestMemoryConnectorTest
                 0, ORDERS_COUNT);
     }
 
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'memory' does not support comment on table");
+    }
+
     @Test(timeOut = 30_000, dataProvider = "joinDistributionTypes")
     public void testJoinLargeBuildSideDynamicFiltering(JoinDistributionType joinDistributionType)
     {

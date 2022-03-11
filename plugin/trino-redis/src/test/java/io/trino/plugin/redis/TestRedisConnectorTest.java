@@ -18,9 +18,11 @@ import io.trino.plugin.redis.util.RedisServer;
 import io.trino.testing.BaseConnectorTest;
 import io.trino.testing.QueryRunner;
 import io.trino.testing.TestingConnectorBehavior;
+import org.junit.Test;
 import org.testng.annotations.AfterClass;
 
 import static io.trino.plugin.redis.RedisQueryRunner.createRedisQueryRunner;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TestRedisConnectorTest
         extends BaseConnectorTest
@@ -73,5 +75,12 @@ public class TestRedisConnectorTest
             default:
                 return super.hasBehavior(connectorBehavior);
         }
+    }
+
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'redis' does not support comment on table");
     }
 }

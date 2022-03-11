@@ -23,6 +23,7 @@ import org.testng.annotations.Test;
 import static io.trino.plugin.thrift.integration.ThriftQueryRunner.createThriftQueryRunner;
 import static io.trino.spi.type.VarcharType.VARCHAR;
 import static io.trino.testing.QueryAssertions.assertContains;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TestThriftConnectorTest
         extends BaseConnectorTest
@@ -77,5 +78,12 @@ public class TestThriftConnectorTest
                 .row("tiny")
                 .row("sf1");
         assertContains(actualSchemas, resultBuilder.build());
+    }
+
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'thrift' does not support comment on table");
     }
 }

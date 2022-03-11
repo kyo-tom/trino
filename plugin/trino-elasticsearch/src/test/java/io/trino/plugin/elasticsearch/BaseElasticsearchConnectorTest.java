@@ -238,6 +238,13 @@ public abstract class BaseElasticsearchConnectorTest
     }
 
     @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'elasticsearch' does not support comment on table");
+    }
+
+    @Test
     public void testNullPredicate()
             throws IOException
     {

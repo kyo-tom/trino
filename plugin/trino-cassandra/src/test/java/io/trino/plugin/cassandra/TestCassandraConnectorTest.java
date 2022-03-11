@@ -211,6 +211,13 @@ public class TestCassandraConnectorTest
 
     @Test
     @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'cassandra' does not support comment on table");
+    }
+
+    @Test
+    @Override
     public void testShowCreateTable()
     {
         assertThat(computeActual("SHOW CREATE TABLE orders").getOnlyValue())

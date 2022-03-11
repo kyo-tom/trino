@@ -166,6 +166,13 @@ public class TestPhoenixConnectorTest
         throw new SkipException("test disabled until issue fixed"); // TODO https://github.com/trinodb/trino/issues/2348
     }
 
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'phoenix' does not support comment on table");
+    }
+
     @Override
     protected boolean isColumnNameRejected(Exception exception, String columnName, boolean delimited)
     {

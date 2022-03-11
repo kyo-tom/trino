@@ -204,6 +204,13 @@ public class TestBigQueryConnectorTest
     }
 
     @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'bigquery' does not support comment on table");
+    }
+
+    @Test
     public void testCreateTableWithRowTypeWithoutField()
     {
         String tableName = "test_row_type_table_" + randomTableSuffix();

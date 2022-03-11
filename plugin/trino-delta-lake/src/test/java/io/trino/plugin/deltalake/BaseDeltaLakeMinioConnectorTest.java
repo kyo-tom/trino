@@ -231,6 +231,13 @@ public abstract class BaseDeltaLakeMinioConnectorTest
         assertUpdate("DROP SCHEMA " + schemaName);
     }
 
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog '" + DELTA_CATALOG + "' does not support comment on table");
+    }
+
     @Override
     public void testCharVarcharComparison()
     {

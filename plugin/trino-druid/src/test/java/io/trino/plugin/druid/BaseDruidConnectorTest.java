@@ -38,6 +38,7 @@ import static io.trino.sql.planner.assertions.PlanMatchPattern.anyTree;
 import static io.trino.sql.planner.assertions.PlanMatchPattern.node;
 import static io.trino.testing.MaterializedResult.resultBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public abstract class BaseDruidConnectorTest
         extends BaseJdbcConnectorTest
@@ -234,6 +235,13 @@ public abstract class BaseDruidConnectorTest
                 .build();
         actualColumns = computeActual("DESCRIBE " + datasourceB);
         Assert.assertEquals(actualColumns, expectedColumns);
+    }
+
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'druid' does not support comment on table");
     }
 
     @Test

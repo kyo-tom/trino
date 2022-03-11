@@ -35,6 +35,7 @@ import static io.trino.testing.sql.TestTable.randomTableSuffix;
 import static java.lang.String.format;
 import static java.util.Locale.ENGLISH;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
@@ -146,6 +147,13 @@ public abstract class BaseOracleConnectorTest
                 .row("comment", "varchar(79)", "", "")
                 .build();
         assertEquals(actual, expected);
+    }
+
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'oracle' does not support comment on table");
     }
 
     /**

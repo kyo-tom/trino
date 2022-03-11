@@ -367,6 +367,13 @@ public abstract class AbstractKuduConnectorTest
 
     @Test
     @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'kudu' does not support comment on table");
+    }
+
+    @Test
+    @Override
     public void testCreateTableAsSelectNegativeDate()
     {
         // Map date column type to varchar

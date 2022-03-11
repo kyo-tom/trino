@@ -191,6 +191,13 @@ public class TestPhoenixConnectorTest
         return columnName.equals("a\"quote");
     }
 
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'phoenix' does not support comment on table");
+    }
+
     @Override
     protected Optional<DataMappingTestSetup> filterDataMappingSmokeTestData(DataMappingTestSetup dataMappingTestSetup)
     {

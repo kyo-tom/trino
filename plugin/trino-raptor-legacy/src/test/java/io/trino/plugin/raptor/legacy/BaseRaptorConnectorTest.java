@@ -196,6 +196,13 @@ public abstract class BaseRaptorConnectorTest
     }
 
     @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'raptor' does not support comment on table");
+    }
+
+    @Test
     public void testShardUuidHiddenColumn()
     {
         assertUpdate("CREATE TABLE test_shard_uuid AS SELECT orderdate, orderkey FROM orders", "SELECT count(*) FROM orders");

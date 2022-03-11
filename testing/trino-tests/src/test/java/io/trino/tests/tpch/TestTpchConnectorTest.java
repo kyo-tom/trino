@@ -37,6 +37,7 @@ import static io.trino.spi.type.VarcharType.createVarcharType;
 import static io.trino.sql.planner.planprinter.IoPlanPrinter.FormattedMarker.Bound.EXACTLY;
 import static io.trino.testing.TestingSession.testSessionBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.testng.Assert.assertEquals;
 
 public class TestTpchConnectorTest
@@ -130,6 +131,13 @@ public class TestTpchConnectorTest
     {
         assertUpdate("ANALYZE orders", 15000);
         assertQueryFails("ANALYZE orders WITH (foo = 'bar')", ".* analyze property 'foo' does not exist");
+    }
+
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'tpch' does not support comment on table");
     }
 
     @Test

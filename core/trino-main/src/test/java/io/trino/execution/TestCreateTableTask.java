@@ -65,6 +65,7 @@ import static io.trino.SessionTestUtils.TEST_SESSION;
 import static io.trino.spi.StandardErrorCode.ALREADY_EXISTS;
 import static io.trino.spi.StandardErrorCode.INVALID_TABLE_PROPERTY;
 import static io.trino.spi.StandardErrorCode.NOT_SUPPORTED;
+import static io.trino.spi.connector.ConnectorCapabilities.COMMENT_ON_TABLE;
 import static io.trino.spi.connector.ConnectorCapabilities.NOT_NULL_COLUMN_CONSTRAINT;
 import static io.trino.spi.session.PropertyMetadata.stringProperty;
 import static io.trino.spi.type.BigintType.BIGINT;
@@ -183,6 +184,32 @@ public class TestCreateTableTask
                 .hasMessage("Catalog 'catalog' table property 'foo' does not exist");
 
         assertEquals(metadata.getCreateTableCallCount(), 0);
+    }
+
+    @Test
+    public void testCreateWithCommentOnUnsupportedConnector()
+    {
+        metadata.setConnectorCapabilities();
+        List<TableElement> inputColumns = ImmutableList.of(
+                new ColumnDefinition(identifier("a"), toSqlType(DATE), true, emptyList(), Optional.empty()));
+        CreateTable statement = new CreateTable(QualifiedName.of("test_table"), inputColumns, true, ImmutableList.of(), Optional.of("foo"));
+        CreateTableTask createTableTask = new CreateTableTask(plannerContext, new AllowAllAccessControl(), columnPropertyManager, tablePropertyManager);
+        assertTrinoExceptionThrownBy(() ->
+                getFutureValue(createTableTask.internalExecute(statement, testSession, emptyList(), output -> {})))
+                .hasErrorCode(NOT_SUPPORTED)
+                .hasMessage("Catalog 'catalog' does not support comment on table");
+    }
+
+    @Test
+    public void testCreateWithCommentOnSupportedConnector()
+    {
+        metadata.setConnectorCapabilities(COMMENT_ON_TABLE);
+        List<TableElement> inputColumns = ImmutableList.of(
+                new ColumnDefinition(identifier("a"), toSqlType(DATE), true, emptyList(), Optional.empty()));
+        CreateTable statement = new CreateTable(QualifiedName.of("test_table"), inputColumns, true, ImmutableList.of(), Optional.of("foo"));
+        CreateTableTask createTableTask = new CreateTableTask(plannerContext, new AllowAllAccessControl(), columnPropertyManager, tablePropertyManager);
+        getFutureValue(createTableTask.internalExecute(statement, testSession, emptyList(), output -> {}));
+        assertEquals(metadata.getCreateTableCallCount(), 1);
     }
 
     @Test

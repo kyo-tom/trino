@@ -134,6 +134,13 @@ public class TestClickHouseConnectorTest
         assertQueryFails("ALTER TABLE " + tableName + " DROP COLUMN a", "Code: 47,.* Missing columns: 'a' while processing query: 'a', required columns: 'a' 'a' .*\\n.*");
     }
 
+    @Test
+    @Override
+    public void testCreateTableWithComment() {
+        assertThatThrownBy(super::testCreateTableWithComment)
+                .hasMessageContaining("Catalog 'clickhouse' does not support comment on table");
+    }
+
     @Override
     public void testAddColumn()
     {
